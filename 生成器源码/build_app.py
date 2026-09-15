@@ -13,7 +13,7 @@ def deflate_raw(b):
 # 目录可整体搬迁：源码在 <项目根>/生成器源码/，产物与模板 docx 在 <项目根>/
 BUILD = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(BUILD)
-SRC_DOCX = os.path.join(ROOT, '深信服云计算平台实施方案-XX集团(2).docx')
+SRC_DOCX = os.path.join(ROOT, '深信服云计算平台实施方案-XX集团.docx')
 OUT = os.path.join(ROOT, '深信服云计算平台实施方案生成器.html')
 
 # ------------------------------------------------------------------ 参数定义

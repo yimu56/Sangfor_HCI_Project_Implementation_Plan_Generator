@@ -323,7 +323,7 @@ if __name__ == '__main__':
     BUILD = os.path.dirname(os.path.abspath(__file__))
     ROOT = os.path.dirname(BUILD)
     tpl = argv[0] if argv and not argv[0].startswith('-') else \
-        os.path.join(ROOT, '深信服云计算平台实施方案-XX集团(2).docx')
+        os.path.join(ROOT, '深信服云计算平台实施方案-XX集团.docx')
     out = BUILD
     if '-o' in argv:
         out = argv[argv.index('-o') + 1]
