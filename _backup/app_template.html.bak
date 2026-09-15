@@ -43,24 +43,11 @@ input,textarea{font:inherit;color:inherit}
 .btn.sm{padding:3px 8px;font-size:12px;border-radius:6px}
 .btn[disabled]{opacity:.45;cursor:not-allowed}
 
-/* ---------- 布局（左侧编辑区宽度可拖拽） ---------- */
-.layout{display:grid;grid-template-columns:var(--leftW,540px) 5px 1fr;height:calc(100vh - var(--h))}
-.left{overflow:auto;padding:14px}
+/* ---------- 布局 ---------- */
+.layout{display:grid;grid-template-columns:430px 1fr;height:calc(100vh - var(--h))}
+.left{overflow:auto;padding:14px;border-right:1px solid var(--bd)}
 .right{overflow:auto;background:#e7eaee;padding:22px}
-.splitter{cursor:col-resize;position:relative;background:#e7eaee;touch-action:none}
-.splitter::before{
-  content:"";position:absolute;top:0;bottom:0;left:1px;width:3px;background:var(--bd2);
-  transition:background .15s,left .15s,width .15s;
-}
-.splitter:hover::before,.splitter.on::before{background:var(--acc);left:0;width:5px}
-body.resizing{cursor:col-resize;user-select:none}
-body.resizing .page{pointer-events:none}
-body.ov-on{overflow:hidden}
-@media(max-width:1080px){
-  .layout{grid-template-columns:1fr;height:auto}
-  .left,.right{height:auto}
-  .splitter{display:none}
-}
+@media(max-width:1080px){.layout{grid-template-columns:1fr;height:auto}.left,.right{height:auto}}
 
 /* ---------- 卡片 ---------- */
 .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;overflow:hidden}
@@ -119,78 +106,25 @@ body.ov-on{overflow:hidden}
 /* ---------- 表格编辑器 ---------- */
 .tbl{border:1px solid var(--bd);border-radius:9px;margin-bottom:9px;overflow:hidden;background:#fff}
 .tbl-hd{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#fafbfc;cursor:pointer}
-.tbl-hd:hover{background:#f4f7fb}
-.tbl-hd b{font-size:12.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tbl-hd .meta{font-size:11px;color:var(--ink2);margin-left:auto;white-space:nowrap;flex:0 0 auto}
-.tbl-hd .acts{display:flex;gap:4px;flex:0 0 auto}
-.tbl-hd .acts button{
-  border:1px solid var(--bd2);background:#fff;color:var(--ink2);border-radius:6px;
-  font-size:11px;line-height:1.7;padding:1px 7px;white-space:nowrap
-}
-.tbl-hd .acts button:hover{border-color:var(--acc);color:var(--acc);background:#f2f8ff}
+.tbl-hd b{font-size:12.5px}
+.tbl-hd .meta{font-size:11px;color:var(--ink2);margin-left:auto}
 .tbl-bd{padding:8px 10px 10px;border-top:1px solid var(--bd);overflow:auto}
-.tbl-ph{padding:12px;font-size:11.5px;color:var(--ink2);background:#fafbfc;text-align:center}
-.tbl-hint{
-  display:flex;align-items:center;gap:8px;font-size:11.5px;line-height:1.55;color:#8a5a00;
-  background:#fff4e5;border:1px solid #ffe0b2;border-radius:7px;padding:6px 9px;margin:0 0 8px
-}
-.tbl-hint button{
-  border:1px solid #e6ac56;background:#fff;color:#8a5a00;border-radius:6px;font-size:11px;
-  line-height:1.7;padding:1px 8px;white-space:nowrap;flex:0 0 auto
-}
-.tbl-hint button:hover{background:#8a5a00;border-color:#8a5a00;color:#fff}
-
-/* 网格：列宽取自模板真实 tblGrid 比例，并保证每列不低于最小可编辑宽度。
-   表格按“内容自然宽度”渲染（不做拉伸），容器更宽时整体居中，更窄时横向滚动，
-   这样侧栏与放大浮层里的列宽完全一致，所见即所得。 */
-.grid-wrap{width:max-content;margin:0 auto}
-table.grid{
-  border-collapse:separate;border-spacing:0;table-layout:fixed;
-  width:var(--tblw,320px);min-width:var(--tblw,320px);border:1px solid var(--bd);background:#fff
-}
-table.grid td{
-  border-right:1px solid var(--bd);border-bottom:1px solid var(--bd);
-  padding:0;vertical-align:top;position:relative
-}
-table.grid tbody tr:last-child td{border-bottom:0}
-table.grid td:last-child{border-right:0}
+table.grid{border-collapse:collapse;width:100%;min-width:320px}
+table.grid td{border:1px solid var(--bd);padding:0;vertical-align:top;position:relative}
 table.grid td.idx{
-  width:30px;text-align:center;font-size:10px;color:#98a0aa;background:#fafbfc;
-  vertical-align:middle;position:sticky;left:0;z-index:2
+  width:26px;text-align:center;font-size:10px;color:#98a0aa;background:#fafbfc;vertical-align:middle
 }
-table.grid td.op{width:34px;text-align:center;vertical-align:middle;background:#fafbfc;position:sticky;right:0;z-index:2}
-table.grid td.op button{
-  border:1px solid transparent;background:transparent;color:#b9c0ca;font-size:13px;line-height:1;
-  padding:5px 7px;border-radius:6px
-}
-table.grid td.op button:hover{color:var(--danger);background:#fdeceb;border-color:#f3c4bf}
+table.grid td.op{width:22px;text-align:center;vertical-align:middle;background:#fafbfc}
+table.grid td.op button{border:0;background:transparent;color:#c2c8d0;font-size:14px;line-height:1;padding:2px}
+table.grid td.op button:hover{color:var(--danger)}
 table.grid textarea{
-  width:100%;border:0;background:transparent;padding:7px 8px;resize:vertical;outline:none;
-  font:inherit;font-size:12.5px;line-height:1.45;min-height:36px;display:block
+  width:100%;border:0;background:transparent;padding:5px 6px;resize:vertical;outline:none;
+  font:inherit;font-size:12px;line-height:1.5;min-height:28px;display:block
 }
-table.grid tbody tr:not(.is-head) td:hover{background:#f5f9fe}
-table.grid td:focus-within{background:#eef6ff;box-shadow:inset 0 0 0 2px var(--acc);z-index:5}
-tr.is-head td{background:#f1f5fa;font-weight:600}
-tr.is-head td.idx{background:#eaeff6;font-weight:400}
-tr.is-head textarea{font-weight:600}
-tr.is-sticky td{position:sticky;z-index:4;box-shadow:0 1px 0 var(--bd)}
+table.grid td:focus-within{outline:2px solid #0b6bcb;outline-offset:-1px;background:#f7fbff}
 .tbl-ft{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
-
-/* ---------- 放大编辑浮层 ---------- */
-.ov{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:16px}
-.ov[hidden]{display:none}
-.ov-back{position:absolute;inset:0;background:#0d1522a8}
-.ov-panel{
-  position:relative;display:flex;flex-direction:column;width:min(1400px,96vw);height:min(90vh,1040px);
-  background:#fff;border-radius:12px;box-shadow:0 20px 70px #00000059;overflow:hidden;
-  animation:ovin .15s ease-out
-}
-@keyframes ovin{from{opacity:.35;transform:translateY(10px) scale(.995)}to{opacity:1;transform:none}}
-.ov-hd{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fafbfc;border-bottom:1px solid var(--bd)}
-.ov-hd b{font-size:13.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ov-bd{flex:1;overflow:auto;padding:12px 14px;background:#fafbfc}
-.ov-bd .tbl-bd{padding:0;border-top:0;overflow:visible}
-.ov-ft{padding:8px 14px;background:#fafbfc;border-top:1px solid var(--bd);font-size:11px;color:var(--ink2)}
+tr.is-head td{background:#f4f7fb;font-weight:600}
+tr.is-head textarea{font-weight:600}
 
 /* ---------- 预览 ---------- */
 .pv-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#5f6672;font-size:12px}
@@ -273,12 +207,7 @@ tr.is-sticky td{position:sticky;z-index:4;box-shadow:0 1px 0 var(--bd)}
       <ol>
         <li>本工具已内置模板《深信服云计算平台实施方案》的全部章节结构（1 级～4 级标题、25 张表格）与 1148 个占位字段。</li>
         <li>“① 项目关键参数”里的内容会自动填充到全文对应位置（如客户名称、节点数量、IP 地址、负责人等）。</li>
-        <li>“② 章节内容”按模板章节顺序排列，可直接修改任意段落、标题、表格单元格；表格支持增删行，<b>增删行后会自动定位到该行，已展开的章节不会被收起</b>。</li>
-        <li><b>表格编辑</b>：点击表格标题栏展开/收起。列宽按模板真实比例渲染，并保证每一格都有足够的可点击、可录入面积。
-          列数较多的表格（如「机架部署规划（U 位图）」）展开时会<b>自动进入放大编辑浮层</b>；也可随时点标题栏右侧的
-          <span class="kbd">⤢ 放大编辑</span> 打开。浮层内左侧行号列与右侧删除按钮在横向滚动时固定不动，
-          <span class="kbd">Tab</span> / <span class="kbd">Shift+Tab</span> 在单元格之间移动，<span class="kbd">Esc</span> 返回侧栏。</li>
-        <li><b>调整编辑区宽度</b>：拖动中间的竖条分隔线可以加宽左侧编辑区（宽度会被记住）。侧栏越宽，宽表越能完整显示。</li>
+        <li>“② 章节内容”按模板章节顺序排列，可直接修改任意段落、标题、表格单元格；表格支持增删行。</li>
         <li>右侧为实时预览。点击 <b>下载实施方案 (.docx)</b> 得到 Word 文件，<b>框架、顺序、样式、页眉页脚、拓扑图全部保留</b>。</li>
         <li>首次用 Word 打开时目录可能显示旧标题 —— 已开启“打开时更新域”，按 <span class="kbd">Ctrl+A</span> 再按 <span class="kbd">F9</span> 亦可刷新目录。</li>
         <li>所有输入会自动保存在浏览器本地，中途关闭不会丢失；也可“导出配置”备份为 JSON。</li>
@@ -299,8 +228,6 @@ tr.is-sticky td{position:sticky;z-index:4;box-shadow:0 1px 0 var(--bd)}
     <div style="height:60px"></div>
   </aside>
 
-  <div class="splitter" id="splitter" title="按住拖动，调整左侧编辑区宽度"></div>
-
   <section class="right">
     <div class="pv-bar">
       <span>实时预览（近似 Word 排版效果）</span>
@@ -315,24 +242,6 @@ tr.is-sticky td{position:sticky;z-index:4;box-shadow:0 1px 0 var(--bd)}
     </div>
     <div class="page zoom" id="page" style="--z:.9"><div class="pg-body" id="pv"></div></div>
   </section>
-</div>
-
-<div class="ov" id="ov" hidden>
-  <div class="ov-back" data-ovclose="1"></div>
-  <div class="ov-panel" id="ovPanel" role="dialog" aria-modal="true" aria-label="表格放大编辑" tabindex="-1">
-    <div class="ov-hd">
-      <b id="ovTitle">表格</b>
-      <span class="mini" id="ovMeta"></span>
-      <span class="spacer"></span>
-      <button class="btn sm" id="ovInline">↘ 在侧栏编辑</button>
-      <button class="btn sm" id="ovClose">✕ 关闭</button>
-    </div>
-    <div class="ov-bd" id="ovSlot"></div>
-    <div class="ov-ft">
-      单元格内可直接录入；<span class="kbd">Tab</span> / <span class="kbd">Shift+Tab</span> 在各单元格之间移动；
-      <span class="kbd">Esc</span> 返回侧栏。表格左侧行号与右侧删除按钮在横向滚动时固定显示。
-    </div>
-  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -488,29 +397,24 @@ function indexTokens(){
     if(m){ tokNodes[m[0]]=t; t.__tok=m[0]; }
   }
 }
-/* 表格：按文档顺序记录每张表的行节点、单元格 token、真实列宽与合并跨度 */
+/* 表格：按文档顺序记录每张表的行节点与单元格 token */
 function buildTableRefs(){
   const body=docDom.getElementsByTagNameNS(NS_W,'body')[0];
   let ti=0;
   for(const el of [...body.children]){
     if(el.localName!=='tbl') continue;
     ti++;
-    const grid=qc(el,'tblGrid');
-    const gridW=grid?qa(grid,'gridCol').map(g=>parseInt(attrW(g,'w')||'0',10)||0):[];
     const rows=[];
     for(const tr of qa(el,'tr')){
-      const cells=[],spans=[];
+      const cells=[];
       for(const tc of qa(tr,'tc')){
-        const tcpr=qc(tc,'tcPr');
-        const gs=tcpr?parseInt(attrW(qc(tcpr,'gridSpan'),'val')||'1',10)||1:1;
-        spans.push(gs);
         const p=qc(tc,'p'); const r=p?qc(p,'r'):null; const tn=r?qc(r,'t'):null;
         const id=tn?(tn.__tok||(TOK_ONE.test(tn.textContent)?tn.textContent.trim():null)):null;
         cells.push(id&&tokNodes[id]?id:null);
       }
-      rows.push({tr,cells,spans,del:false});
+      rows.push({tr,cells,del:false});
     }
-    tables[ti]={el,rows,gridW};
+    tables[ti]={el,rows};
   }
 }
 
@@ -603,40 +507,7 @@ function renderParams(){
 }
 
 /* ---------------- 章节表单 ---------------- */
-/* 重建表单会丢掉“展开了哪些章节/哪些表格、滚动位置、搜索词”，
-   这里在重建前快照、重建后还原，避免编辑中途跳回顶部或塌陷 */
-function captureFormState(){
-  const st={sec:{},tbl:{},scroll:0,q:'',focusTok:null,ovTi:OV.ti};
-  document.querySelectorAll('#formBox details.sec').forEach(d=>{ st.sec[d.dataset.sec]=d.open; });
-  document.querySelectorAll('#formBox .tbl').forEach(w=>{
-    const b=w.querySelector('.tbl-bd'); if(b) st.tbl[w.dataset.ti]=!b.hidden;
-  });
-  const l=$('#left'); if(l) st.scroll=l.scrollTop;
-  const q=$('#q'); if(q) st.q=q.value;
-  const ae=document.activeElement;
-  if(ae&&ae.dataset&&ae.dataset.tok) st.focusTok=ae.dataset.tok;
-  return st;
-}
-function applyFormState(st){
-  if(st){
-    document.querySelectorAll('#formBox details.sec').forEach(d=>{
-      if(Object.prototype.hasOwnProperty.call(st.sec,d.dataset.sec)) d.open=st.sec[d.dataset.sec];
-    });
-    document.querySelectorAll('#formBox .tbl').forEach(w=>{
-      if(!Object.prototype.hasOwnProperty.call(st.tbl,w.dataset.ti)) return;
-      if(OV.ti===w.dataset.ti) return;              // 已移入浮层，交给浮层处理
-      const b=w.querySelector('.tbl-bd'); if(b&&st.tbl[w.dataset.ti]) b.hidden=false;
-    });
-    const l=$('#left'); if(l) l.scrollTop=st.scroll;
-  }
-  applySearch();
-  if(st&&st.focusTok){
-    const n=document.querySelector('#formBox [data-tok="'+st.focusTok+'"]');
-    if(n&&n.offsetParent) try{ n.focus({preventScroll:true}); }catch(e){}
-  }
-}
 function renderForm(){
-  const st=captureFormState();
   let h='<details class="card" open><summary><span class="caret">▶</span><span class="lv">②</span>'
     +'章节内容（按模板顺序）<span class="cnt">'+DATA.sections.length+' 节</span></summary><div class="bd">';
   DATA.sections.forEach((s,si)=>{
@@ -668,82 +539,30 @@ function renderForm(){
   h+='</div></details>';
   $('#formBox').innerHTML=h;
   // 回填值
-  document.querySelectorAll('#formBox [data-tok]').forEach(n=>{ n.value=values[n.dataset.tok]||''; });
-  document.querySelectorAll('#formBox [data-list]').forEach(n=>{
-    const it=listItem(n.dataset.list); n.value=it.toks.map(t=>values[t]||'').join('\n');
+  document.querySelectorAll('[data-tok]').forEach(n=>{ n.value=values[n.dataset.tok]||''; autoGrow(n); });
+  document.querySelectorAll('[data-list]').forEach(n=>{
+    const it=listItem(n.dataset.list); n.value=it.toks.map(t=>values[t]||'').join('\n'); autoGrow(n);
   });
-  rehomeOverlay();          // 浮层若开着，把新生成的表格体重新挂回浮层
-  applyFormState(st);
-  layoutFix();
 }
 function listItem(key){
   const [si,ii]=key.split('.').map(Number);
   return DATA.sections[si].items[ii];
 }
-/* 每列最小可编辑宽度（px）。列宽按模板 tblGrid 的真实比例分配：
-   最窄的一列落到 MIN_COL_PX，整体自然宽度由此反推，保证任何一列都不会被挤成细条。 */
-const MIN_COL_PX=46, MAX_COL_PX=280, IDX_COL_PX=30, OP_COL_PX=34, GROW_PX=260, WIDE_RATIO=1.25;
-function colPlan(ti,ncols){
-  const T=tables[ti];
-  let gw=((T&&T.gridW)||[]).filter(w=>w>0);
-  while(gw.length<ncols) gw.push(gw.length?gw[gw.length-1]:1000);
-  gw=gw.slice(0,ncols);
-  const mn=Math.min.apply(null,gw)||1000;
-  const px=gw.map(w=>Math.max(MIN_COL_PX,Math.min(MAX_COL_PX,Math.round(w/mn*MIN_COL_PX))));
-  return {px:px,total:px.reduce((a,b)=>a+b,0)};
-}
-/* 表格宽度：至少是自然宽度；容器更宽时最多再撑开 GROW_PX（窄表基本铺满卡片，
-   宽表不会被拉伸到夸张的比例）。需要测量，所以要等节点进 DOM 之后再跑。 */
-function tblBodies(scope){
-  if(!scope) return [...document.querySelectorAll('.tbl-bd')];
-  // 传进来的可能就是一个 .tbl-bd 自身，querySelectorAll 不含自身，必须单独处理
-  const list=scope.classList&&scope.classList.contains('tbl-bd')?[scope]:[];
-  scope.querySelectorAll('.tbl-bd').forEach(b=>list.push(b));
-  return list;
-}
-function sizeGridsIn(scope){
-  tblBodies(scope).forEach(bd=>{
-    const tbl=bd.querySelector('table.grid'); if(!tbl) return;
-    const nat=parseFloat(tbl.dataset.natw)||0; if(!nat) return;
-    if(bd.hidden||bd.offsetParent===null){ tbl.style.width=nat+'px'; return; }
-    const avail=Math.max(nat,Math.min(bd.clientWidth-20,nat+GROW_PX));
-    tbl.style.width=avail+'px';
-  });
-}
-function layoutFix(){
-  sizeGridsIn($('#formBox'));
-  const slot=$('#ovSlot'); if(slot) sizeGridsIn(slot);
-  applyHints(); markStickyHeads(); growAll($('#formBox'));
-  if(slot) growAll(slot);
-}
 function tableEditor(it,si,ii){
   const T=tables[it.ti];
-  const ncols=(T&&T.gridW&&T.gridW.length)||it.rows.reduce((a,r)=>Math.max(a,r.length),1);
-  const plan=colPlan(it.ti,ncols);
-  const natw=plan.total+IDX_COL_PX+OP_COL_PX+2;
-  let h='<div class="tbl" data-ti="'+it.ti+'">'
-    +'<div class="tbl-hd" data-toggle="'+it.ti+'"><b>▦ '+esc(it.title)+'</b>'
-    +'<span class="meta">'+it.rows.length+' 行 × '+ncols+' 列</span>'
-    +'<span class="acts"><button type="button" data-wide="'+it.ti+'" title="在更大的浮层中编辑这张表">⤢ 放大编辑</button></span>'
-    +'</div><div class="tbl-bd" hidden>';
-  h+='<div class="grid-wrap"><table class="grid" data-cols="'+ncols+'" data-natw="'+natw+'" '
-    +'style="--tblw:'+natw+'px;width:'+natw+'px"><colgroup>'
-    +'<col style="width:'+IDX_COL_PX+'px">';
-  plan.px.forEach(w=>{ h+='<col style="width:'+w+'px">'; });
-  h+='<col style="width:'+OP_COL_PX+'px"></colgroup><tbody>';
+  let h='<div class="tbl" data-ti="'+it.ti+'"><div class="tbl-hd" data-toggle="'+it.ti+'">'
+    +'<b>▦ '+esc(it.title)+'</b><span class="meta">'+it.rows.length+' 行 × '
+    +(it.rows[0]?it.rows[0].length:0)+' 列</span></div><div class="tbl-bd" hidden>';
+  h+='<table class="grid"><tbody>';
   it.rows.forEach((row,ri)=>{
-    const isHead=ri<it.nhead;
-    const spans=(T&&T.rows[ri]&&T.rows[ri].spans)||[];
-    h+='<tr class="'+(isHead?'is-head':'')+'" data-row="'+ri+'">'
+    h+='<tr class="'+(ri<it.nhead?'is-head':'')+'" data-row="'+ri+'">'
       +'<td class="idx">'+(ri+1)+'</td>';
     row.forEach((tok,ci)=>{
-      const sp=spans[ci]>1?' colspan="'+spans[ci]+'"':'';
-      h+='<td'+sp+'>'+(tok
-        ?'<textarea data-tok="'+tok+'" rows="1">'+esc(values[tok]||'')+'</textarea>'
-        :'<div class="mini" style="padding:7px 8px">—</div>')+'</td>';
+      const v=tok?(values[tok]||''):'';
+      h+='<td>'+(tok?'<textarea data-tok="'+tok+'" rows="1">'+esc(v)+'</textarea>'
+        :'<div class="mini" style="padding:6px">（合并/图形单元格）</div>')+'</td>';
     });
-    h+='<td class="op">'+(isHead?''
-      :'<button type="button" tabindex="-1" data-delrow="'+it.ti+'.'+ri+'" title="删除本行">✕</button>')+'</td>';
+    h+='<td class="op">'+(ri<it.nhead?'':'<button data-delrow="'+it.ti+'.'+ri+'" title="删除本行">×</button>')+'</td>';
     h+='</tr>';
   });
   h+='</tbody></table>';
@@ -751,166 +570,10 @@ function tableEditor(it,si,ii){
   if(it.repeat) h+='<button class="btn sm" data-addrow="'+it.ti+'">＋ 添加一行</button>';
   if(it.gen==='ip') h+='<button class="btn sm" data-genip="1">⚙ 按节点数自动生成</button>';
   if(it.gen==='sch') h+='<button class="btn sm" data-gensch="1">⚙ 按开始日期排期</button>';
-  h+='</div></div></div></div>';
+  h+='</div></div></div>';
   return h;
 }
-function autoGrow(n){ n.style.height='auto'; n.style.height=Math.max(36,n.scrollHeight)+'px'; }
-/* 只对“真正可见”的输入框做高度自适应：隐藏区域没有布局，量出来是 0，
-   既没意义又会因为成百上千次强制重排拖慢表单重建 */
-function growAll(root){
-  if(!root) return;
-  root.querySelectorAll('textarea').forEach(n=>{
-    const bd=n.closest('.tbl-bd');
-    if(bd&&(bd.hidden||bd.offsetParent===null)) return;
-    const dt=n.closest('details');
-    if(dt&&!dt.open) return;
-    if(n.offsetParent===null) return;
-    autoGrow(n);
-  });
-}
-/* 表头行吸顶：多行表头需要把第二行的 top 偏移接在第一行下面 */
-function stickyHeadsIn(bd){
-  if(!bd) return;
-  const rows=[...bd.querySelectorAll('table.grid tbody tr.is-head')];
-  if(!rows.length) return;
-  if(bd.hidden||bd.offsetParent===null){
-    rows.forEach(tr=>{ tr.classList.remove('is-sticky');
-      tr.querySelectorAll('td').forEach(td=>{ td.style.top=''; }); });
-    return;
-  }
-  let off=0;
-  rows.forEach(tr=>{
-    tr.classList.add('is-sticky');
-    tr.querySelectorAll('td').forEach(td=>{ td.style.top=off+'px'; });
-    off+=tr.getBoundingClientRect().height||0;
-  });
-}
-function markStickyHeads(){
-  document.querySelectorAll('#formBox .tbl-bd').forEach(stickyHeadsIn);
-  const slot=$('#ovSlot'); if(slot) slot.querySelectorAll('.tbl-bd').forEach(stickyHeadsIn);
-}
-/* 侧栏放不下时给出“放大编辑”提示，避免用户对着一堆压扁的格子硬填 */
-function applyHints(){
-  document.querySelectorAll('#formBox .tbl').forEach(w=>{
-    const bd=w.querySelector('.tbl-bd'); if(!bd) return;
-    const tbl=bd.querySelector('table.grid'); if(!tbl) return;
-    const natW=parseFloat(tbl.dataset.natw)||0;
-    const need=!bd.hidden&&bd.offsetParent!==null&&bd.clientWidth>0&&natW>bd.clientWidth-20+24;
-    let hint=w.querySelector('.tbl-hint');
-    if(!need){ if(hint) hint.remove(); return; }
-    const txt='本表格共 '+(tbl.dataset.cols||'')+' 列，当前侧栏宽度放不下，建议放大编辑。';
-    if(!hint){
-      hint=document.createElement('div'); hint.className='tbl-hint';
-      hint.innerHTML='<span></span><button type="button" data-wide="'+w.dataset.ti
-        +'">⤢ 放大编辑</button>';
-      bd.insertBefore(hint,bd.firstChild);
-    }
-    hint.firstChild.textContent=txt;
-  });
-}
-/* 用 textContent 而不是 innerText：折叠的 <details> 里 innerText 取不到内容，
-   会导致在未展开的章节里搜索永远搜不到。这里额外把当前录入的值也纳入匹配。 */
-function applySearch(){
-  const q=(($('#q')&&$('#q').value)||'').trim(), lq=q.toLowerCase();
-  document.querySelectorAll('#formBox details.sec').forEach(d=>{
-    let hit=true;
-    if(q){
-      let hay=d.textContent||'';
-      d.querySelectorAll('textarea,input').forEach(n=>{ if(n.value) hay+='\n'+n.value; });
-      hit=hay.toLowerCase().includes(lq);
-    }
-    d.style.display=hit?'':'none';
-    if(q&&hit) d.open=true;
-  });
-}
-
-/* ---------------- 放大编辑浮层 ----------------
-   直接把 .tbl-bd 这个 DOM 节点搬进浮层再搬回来，编辑状态、事件绑定、
-   表格增删行的逻辑都原样复用，不需要把表格渲染两遍。 */
-const OV={ti:null,bd:null,wasHidden:true,noAuto:{}};
-function ovIsOpen(){ return OV.ti!==null; }
-function ovOpen(ti,opts){
-  opts=opts||{};
-  const wrap=document.querySelector('#formBox .tbl[data-ti="'+ti+'"]');
-  if(!wrap) return false;
-  const bd=wrap.querySelector('.tbl-bd'); if(!bd) return false;
-  const titleEl=wrap.querySelector('.tbl-hd b'), metaEl=wrap.querySelector('.tbl-hd .meta');
-  OV.ti=String(ti); OV.bd=bd;
-  OV.wasHidden=(opts.wasHidden!=null)?!!opts.wasHidden:!!bd.hidden;
-  const slot=$('#ovSlot'); slot.innerHTML='';
-  slot.appendChild(bd);
-  bd.hidden=false;
-  $('#ovTitle').textContent=titleEl?titleEl.textContent.trim():'表格';
-  $('#ovMeta').textContent=metaEl?metaEl.textContent.trim():'';
-  if(!wrap.querySelector('.tbl-ph')){
-    const ph=document.createElement('div'); ph.className='tbl-ph';
-    ph.textContent='该表格正在放大编辑中…';
-    wrap.appendChild(ph);
-  }
-  $('#ov').hidden=false;
-  document.body.classList.add('ov-on');
-  const hint=slot.querySelector('.tbl-hint'); if(hint) hint.remove();
-  sizeGridsIn(slot); growAll(slot); stickyHeadsIn(bd);
-  const panel=$('#ovPanel'); if(panel) try{ panel.focus({preventScroll:true}); }catch(e){}
-  return true;
-}
-function ovClose(keepExpanded){
-  if(!ovIsOpen()) return;
-  const ti=OV.ti, bd=OV.bd, wasHidden=OV.wasHidden;
-  const wrap=document.querySelector('#formBox .tbl[data-ti="'+ti+'"]');
-  if(wrap&&bd){
-    const ph=wrap.querySelector('.tbl-ph'); if(ph) ph.remove();
-    $('#ovSlot').removeChild(bd);
-    wrap.appendChild(bd);
-    bd.hidden=(keepExpanded===true)?false:wasHidden;
-  }
-  $('#ov').hidden=true;
-  document.body.classList.remove('ov-on');
-  OV.ti=null; OV.bd=null;
-  requestAnimationFrame(()=>{ layoutFix(); if(bd&&!bd.hidden) bd.scrollTop=0; });
-}
-/* renderForm() 重建后把新生成的表格体重新挂回浮层 */
-function rehomeOverlay(){
-  if(!ovIsOpen()) return;
-  const ti=OV.ti, wasHidden=OV.wasHidden;
-  OV.ti=null; OV.bd=null;
-  $('#ovSlot').innerHTML='';
-  ovOpen(ti,{wasHidden:wasHidden});
-}
-/* ---------------- 左右分栏拖拽 ---------------- */
-(function initSplitter(){
-  const sp=$('#splitter'); if(!sp) return;
-  const root=document.documentElement;
-  const layout=document.querySelector('.layout');
-  const clamp=w=>Math.max(340,Math.min(Math.max(420,Math.min(1100,window.innerWidth*0.62)),w));
-  const cur=()=>parseInt(getComputedStyle(root).getPropertyValue('--leftW'),10)||500;
-  const set=w=>root.style.setProperty('--leftW',clamp(w)+'px');
-  let saved=0; try{ saved=parseInt(localStorage.getItem('hci_left_w')||'0',10)||0; }catch(e){}
-  if(saved) set(saved);
-  let drag=false, raf=0, lastX=0;
-  const settle=()=>requestAnimationFrame(layoutFix);
-  sp.addEventListener('pointerdown',e=>{
-    drag=true; sp.classList.add('on'); document.body.classList.add('resizing');
-    try{ sp.setPointerCapture(e.pointerId); }catch(err){}
-    e.preventDefault();
-  });
-  sp.addEventListener('pointermove',e=>{
-    if(!drag) return;
-    lastX=e.clientX;
-    if(raf) return;
-    raf=requestAnimationFrame(()=>{ raf=0; set(lastX-layout.getBoundingClientRect().left); });
-  });
-  const end=()=>{
-    if(!drag) return;
-    drag=false; sp.classList.remove('on'); document.body.classList.remove('resizing');
-    try{ localStorage.setItem('hci_left_w',String(cur())); }catch(err){}
-    settle();
-  };
-  sp.addEventListener('pointerup',end);
-  sp.addEventListener('pointercancel',end);
-  sp.addEventListener('lostpointercapture',end);
-  window.addEventListener('resize',()=>{ set(cur()); settle(); });
-})();
+function autoGrow(n){ n.style.height='auto'; n.style.height=Math.max(28,n.scrollHeight)+'px'; }
 
 /* ---------------- 预览 ---------------- */
 let imgCache={};
@@ -1109,47 +772,18 @@ document.addEventListener('input',ev=>{
   }
 });
 document.addEventListener('click',async ev=>{
-  const t=ev.target.closest('[data-toggle],[data-wide],[data-ovclose],[data-addrow],[data-delrow],[data-genip],[data-gensch],[data-z],#btnDocx,#btnCopy,#btnHtml,#btnReset,#btnJson,#btnImport,#btnHelp,#btnExpand,#btnCollapse,#btnIpGen,#btnSchGen,#ovClose,#ovInline');
+  const t=ev.target.closest('[data-toggle],[data-addrow],[data-delrow],[data-genip],[data-gensch],[data-z],#btnDocx,#btnCopy,#btnHtml,#btnReset,#btnJson,#btnImport,#btnHelp,#btnExpand,#btnCollapse,#btnIpGen,#btnSchGen');
   if(!t) return;
   if(t.dataset.toggle!==undefined){
-    const wrap=t.closest('.tbl'); const bd=wrap&&wrap.querySelector('.tbl-bd');
-    if(!bd) return;
-    if(bd.hidden){
-      bd.hidden=false;
-      const tbl=bd.querySelector('table.grid');
-      const natW=tbl?(parseFloat(tbl.dataset.natw)||0):0;
-      const avail=bd.clientWidth-20;
-      // 侧栏明显放不下时直接进放大编辑，避免对着一堆压扁的格子硬填
-      if(natW>avail*WIDE_RATIO&&!OV.noAuto[wrap.dataset.ti]){
-        toast('表格较宽，已切换到放大编辑');
-        ovOpen(wrap.dataset.ti,{wasHidden:false});
-        return;
-      }
-      sizeGridsIn(bd); applyHints(); stickyHeadsIn(bd); growAll(bd);
-    }else{
-      bd.hidden=true;
-    }
-    return;
+    const bd=t.parentNode.querySelector('.tbl-bd'); bd.hidden=!bd.hidden; return;
   }
-  if(t.dataset.wide!==undefined){
-    const ti=String(t.dataset.wide);
-    if(ovIsOpen()){ if(OV.ti===ti) return; ovClose(); }
-    ovOpen(ti,{});
-    return;
-  }
-  if(t.id==='ovInline'){ OV.noAuto[OV.ti]=1; ovClose(true); return; }
-  if(t.id==='ovClose'||t.dataset.ovclose!==undefined){ ovClose(); return; }
   if(t.dataset.z){ $('#page').style.setProperty('--z',t.dataset.z); return; }
   if(t.dataset.addrow){ addRow(Number(t.dataset.addrow)); return; }
   if(t.dataset.delrow){ delRow(t.dataset.delrow); return; }
   if(t.dataset.genip||t.id==='btnIpGen'){ genIp(); return; }
   if(t.dataset.gensch||t.id==='btnSchGen'){ genSchedule(); return; }
   if(t.id==='btnHelp'){ const h=$('#helpBox'); h.hidden=!h.hidden; return; }
-  if(t.id==='btnExpand'){
-    document.querySelectorAll('details').forEach(d=>d.open=true);
-    requestAnimationFrame(layoutFix);
-    return;
-  }
+  if(t.id==='btnExpand'){ document.querySelectorAll('details').forEach(d=>d.open=true); return; }
   if(t.id==='btnCollapse'){ document.querySelectorAll('details.sec').forEach(d=>d.open=false); return; }
   if(t.id==='btnReset'){
     if(!confirm('确定把所有内容恢复为模板默认值？当前编辑将丢失。')) return;
@@ -1189,9 +823,13 @@ $('#fileImport').addEventListener('change',async ev=>{
     applyState(st); toast('配置已导入'); ev.target.value='';
   }catch(e){ toast('配置文件解析失败'); }
 });
-$('#q').addEventListener('input',debounce(applySearch,180));
-document.addEventListener('keydown',ev=>{
-  if(ev.key==='Escape'&&ovIsOpen()){ ev.preventDefault(); ovClose(); }
+$('#q').addEventListener('input',ev=>{
+  const q=ev.target.value.trim();
+  document.querySelectorAll('#formBox details.sec').forEach(d=>{
+    const hit=q?d.innerText.includes(q):true;
+    d.style.display=hit?'':'none';
+    if(q&&hit) d.open=true;
+  });
 });
 window.addEventListener('beforeunload',save);
 
@@ -1202,29 +840,14 @@ function tableItem(ti){
   return null;
 }
 function addRow(ti){
-  const T=tables[ti], it=tableItem(ti); if(!T||!it) return;
+  const T=tables[ti], it=tableItem(ti); if(!T) return;
   const src=T.rows[T.rows.length-1]; if(!src) return;
   const {node,map}=cloneWithTokens(src.tr,src.tr);
   const cells=src.cells.map(t=>t?(map[t]||null):null);
-  T.rows.push({tr:node,cells,spans:(src.spans||[]).slice(),del:false});
+  T.rows.push({tr:node,cells,del:false});
   it.rows.push(cells);
   renderForm(); renderPreview(); save();
-  focusRow(ti,T.rows.length-1);
-  toast('已新增第 '+T.rows.length+' 行');
-}
-/* 新增/删除行后把视图定位到目标行，并展开它所在的所有折叠层 */
-function focusRow(ti,ri){
-  const wrap=document.querySelector('#formBox .tbl[data-ti="'+ti+'"]');
-  if(!wrap) return;
-  for(let d=wrap.parentElement;d;d=d.parentElement) if(d.tagName==='DETAILS') d.open=true;
-  const bd=(ovIsOpen()&&OV.ti===String(ti))?$('#ovSlot'):wrap.querySelector('.tbl-bd');
-  if(!bd) return;
-  const tr=bd.querySelector('tr[data-row="'+ri+'"]');
-  if(!tr) return;
-  stickyHeadsIn(bd); growAll(bd);
-  tr.scrollIntoView({block:'center'});
-  const ta=tr.querySelector('textarea');
-  if(ta) try{ ta.focus({preventScroll:true}); }catch(e){}
+  toast('已添加一行，可在表格中填写');
 }
 function delRow(key){
   const [ti,ri]=key.split('.').map(Number); const T=tables[ti]; if(!T) return;
@@ -1277,7 +900,7 @@ function addRowRaw(ti){
   const src=T.rows[T.rows.length-1]; if(!src) return;
   const {node,map}=cloneWithTokens(src.tr,src.tr);
   const cells=src.cells.map(t=>t?(map[t]||null):null);
-  T.rows.push({tr:node,cells,spans:(src.spans||[]).slice(),del:false}); it.rows.push(cells);
+  T.rows.push({tr:node,cells,del:false}); it.rows.push(cells);
 }
 function delRowRaw(ti,ri){
   const T=tables[ti], it=tableItem(ti);

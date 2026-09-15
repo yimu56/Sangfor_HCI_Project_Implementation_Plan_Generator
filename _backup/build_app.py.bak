@@ -10,11 +10,9 @@ def deflate_raw(b):
     c = zlib.compressobj(9, zlib.DEFLATED, -15)
     return c.compress(b) + c.flush()
 
-# 目录可整体搬迁：源码在 <项目根>/生成器源码/，产物与模板 docx 在 <项目根>/
 BUILD = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(BUILD)
-SRC_DOCX = os.path.join(ROOT, '深信服云计算平台实施方案-XX集团(2).docx')
-OUT = os.path.join(ROOT, '深信服云计算平台实施方案生成器.html')
+SRC_DOCX = r'C:\Users\LeiSh\Desktop\HCI\深信服云计算平台实施方案-XX集团(2).docx'
+OUT = r'C:\Users\LeiSh\Desktop\HCI\深信服云计算平台实施方案生成器.html'
 
 # ------------------------------------------------------------------ 参数定义
 # (key, 分组, 标签, 默认值, 类型, 提示)
