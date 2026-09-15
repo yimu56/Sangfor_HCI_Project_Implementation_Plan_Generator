@@ -319,9 +319,12 @@ class TemplateParser:
 
 if __name__ == '__main__':
     argv = sys.argv[1:]
+    # 目录可整体搬迁：源码在 <项目根>/生成器源码/，模板 docx 在 <项目根>/
+    BUILD = os.path.dirname(os.path.abspath(__file__))
+    ROOT = os.path.dirname(BUILD)
     tpl = argv[0] if argv and not argv[0].startswith('-') else \
-        r'C:\Users\LeiSh\Desktop\HCI\深信服云计算平台实施方案-XX集团(2).docx'
-    out = '.'
+        os.path.join(ROOT, '深信服云计算平台实施方案-XX集团(2).docx')
+    out = BUILD
     if '-o' in argv:
         out = argv[argv.index('-o') + 1]
     TemplateParser(tpl).build_model(out)

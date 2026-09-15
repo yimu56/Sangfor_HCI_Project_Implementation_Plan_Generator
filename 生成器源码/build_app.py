@@ -101,17 +101,26 @@ def build():
     struct = model['meta']['structure']
 
     # ---------- 1. 表格（按文档顺序编号） ----------
-    table_list = []      # [{'rows':[[tok,...]]}]
-    for b in struct:
-        if b['kind'] == 'table':
-            table_list.append(b['cells'])
-    assert len(table_list) == 25, len(table_list)
+    table_list = []      # table_list[表号][行号][列号] -> token
+    for blk in struct:
+        if blk['kind'] == 'table':
+            table_list.append(blk['cells'])
+    if len(table_list) != 25:
+        print('[WARN] 模板共 %d 张表格，与 TABLE_META 预设的 25 张不一致；'
+              '超出部分会用默认标题，请同步 TABLE_META 与下面的表号。' % len(table_list))
+
+    def tc(ti, ri, ci):
+        """按 表号/行号/列号 取单元格 token；换模板导致表号错位时返回 None 而不是崩溃"""
+        try:
+            return table_list[ti][ri][ci]
+        except (IndexError, TypeError):
+            return None
 
     # ---------- 2. 公式 ----------
     formulas = {}
 
     def add_formula(tok, tpl):
-        if tok in tokens:
+        if tok and tok in tokens:
             formulas[tok] = tpl
 
     for tok, txt in tokens.items():
@@ -122,33 +131,27 @@ def build():
         if new != txt:
             formulas[tok] = new
 
-    # 修订记录 版本号
-    add_formula(table_list[0][1][1], '{docVersion}')
-    # 物料清单数量
-    add_formula(table_list[3][1][1], '{nodes}')
-    # 项目组成员姓名
+    # 表 1 修订记录 · 版本号
+    add_formula(tc(0, 1, 1), '{docVersion}')
+    # 表 4 物料清单 · 数量
+    add_formula(tc(3, 1, 1), '{nodes}')
+    # 表 19 项目组成员 · 姓名（第 2~7 行第 2 列）
     member_map = {2: '{custPM}', 3: '{vendPM}', 4: '{engDeliver}',
                   5: '{engExpert}', 6: '{salesMgr}', 7: '{presalesMgr}'}
     for r, tpl in member_map.items():
-        add_formula(table_list[18][r][1], tpl)
-    # 服务器 IP 规划表（6 组 × 5 行）
-    ipt = table_list[9]
+        add_formula(tc(18, r, 1), tpl)
+    # 表 10 服务器 IP 规划（每台服务器占 5 行：管理口/vxlan/存储口/业务口/MGMT口）
     for k in range(6):
         base = 1 + k * 5
-        add_formula(ipt[base][0], '超融合服务器%d' % (k + 1))
-        add_formula(ipt[base][3], '{mgmtPrefix}{mgmtStart+' + str(k) + '}')
-        add_formula(ipt[base][5], '{mgmtGateway}')
-        add_formula(ipt[base + 4][3], '{mgmtPrefix}{bmcStart+' + str(k) + '}')
-    # 实施周期：预填工期
-    sct = table_list[19]
+        add_formula(tc(9, base, 0), '超融合服务器%d' % (k + 1))
+        add_formula(tc(9, base, 3), '{mgmtPrefix}{mgmtStart+' + str(k) + '}')
+        add_formula(tc(9, base, 5), '{mgmtGateway}')
+        add_formula(tc(9, base + 4, 3), '{mgmtPrefix}{bmcStart+' + str(k) + '}')
+    # 表 20 项目实施周期：预填各阶段工期
     for i, d in enumerate(SCHEDULE_DAYS):
-        if i + 1 < len(sct):
-            tok = sct[i + 1][2]
-            if tok:
-                tokens[tok] = d
-    # 设备接线表：默认清空示例
-    for row in table_list[10][1:]:
-        pass
+        tok = tc(19, i + 1, 2)
+        if tok:
+            tokens[tok] = d
 
     # ---------- 3. 表单结构 ----------
     sections = []
